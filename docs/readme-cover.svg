@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="430" viewBox="0 0 1200 430" role="img" aria-labelledby="title desc">
+  <title id="title">Ilja Dzhumelya — Beyond Limits</title>
+  <desc id="desc">Monochrome portfolio banner with bold typography and a digital rift.</desc>
+  <defs>
+    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M40 0H0V40" fill="none" stroke="#242424" stroke-width="1"/>
+    </pattern>
+    <linearGradient id="rift" x1="0" x2="1">
+      <stop stop-color="#4a4a4a"/>
+      <stop offset=".45" stop-color="#fff"/>
+      <stop offset="1" stop-color="#555"/>
+    </linearGradient>
+    <clipPath id="rightHalf"><path d="M715 0H1200V430H715z"/></clipPath>
+  </defs>
+  <rect width="1200" height="430" fill="#080808"/>
+  <rect width="1200" height="430" fill="url(#grid)" opacity=".48"/>
+  <path d="M0 0H1200V430H0z" fill="none" stroke="#555" stroke-width="2"/>
+
+  <g font-family="Arial,Helvetica,sans-serif" fill="#fff">
+    <text x="55" y="55" font-size="14" font-weight="700" letter-spacing="4">ILJA DZHUMELYA</text>
+    <text x="55" y="170" font-size="86" font-weight="900" letter-spacing="-6">BEYOND</text>
+    <text x="55" y="265" font-size="86" font-weight="900" letter-spacing="-6">LIMITS</text>
+    <text x="58" y="327" font-size="16" letter-spacing="1">CREATIVE DEVELOPMENT / DIGITAL EXPERIENCES</text>
+    <text x="58" y="391" font-size="12" letter-spacing="3" fill="#aaa">PORTFOLIO  —  SELECTED WORK</text>
+  </g>
+
+  <g clip-path="url(#rightHalf)">
+    <path d="M994-14C937 71 1031 132 955 205S1047 322 937 446" fill="none" stroke="#3a3a3a" stroke-width="115"/>
+    <path d="M994-14C937 71 1031 132 955 205S1047 322 937 446" fill="none" stroke="url(#rift)" stroke-width="5"/>
+    <path d="M1022-14C965 71 1059 132 983 205S1075 322 965 446" fill="none" stroke="#c8c8c8" stroke-width="1" opacity=".65"/>
+    <path d="M966-14C909 71 1003 132 927 205S1019 322 909 446" fill="none" stroke="#c8c8c8" stroke-width="1" opacity=".45"/>
+    <g fill="#fff" opacity=".92">
+      <path d="M810 74h60v5h-60zM1090 102h72v4h-72zM766 159h110v3H766zM1057 208h98v7h-98zM781 293h75v5h-75zM1085 356h79v4h-79z"/>
+      <path d="M788 89h16v2h-16zM1100 115h28v2h-28zM823 172h30v2h-30zM1110 226h44v2h-44zM809 307h26v2h-26z" opacity=".6"/>
+    </g>
+    <path d="M878 0v430M1090 0v430" stroke="#777" stroke-width="1" stroke-dasharray="2 10" opacity=".45"/>
+  </g>
+  <path d="M55 354h560" stroke="#888" stroke-width="1"/>
+  <path d="M55 353h116" stroke="#fff" stroke-width="3"/>
+  <text x="1115" y="394" fill="#aaa" font-family="Arial,Helvetica,sans-serif" font-size="12" letter-spacing="2">ID / 26</text>
+</svg>
+
