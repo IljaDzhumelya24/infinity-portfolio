@@ -1,4 +1,4 @@
-import { useEffect, useLayoutEffect, useRef, useState } from 'react'
+import { useEffect, useLayoutEffect, useRef, useState, type PointerEvent } from 'react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { AnimatedCharacter } from './AnimatedCharacter'
@@ -62,6 +62,20 @@ function SiteHeader({ intro = false, dark = false }: { intro?: boolean; dark?: b
   )
 }
 
+function CubeMark() {
+  return (
+    <div className="about-cube" role="img" aria-label="Dunkler dreidimensionaler Würfel mit einem Infinity-Symbol">
+      <div className="about-cube__body">
+        {['front', 'back', 'right', 'left', 'top', 'bottom'].map((face) => (
+          <div className={`about-cube__face about-cube__face--${face}`} key={face}>
+            {Array.from({ length: 9 }, (_, index) => <span className="about-cube__tile" key={index} />)}
+          </div>
+        ))}
+      </div>
+    </div>
+  )
+}
+
 function App() {
   const stageRef = useRef<HTMLDivElement>(null)
   const riftRef = useRef<HTMLDivElement>(null)
@@ -72,10 +86,16 @@ function App() {
   const worldWordRef = useRef<HTMLImageElement>(null)
   const [fourthHeaderVisible, setFourthHeaderVisible] = useState(false)
 
+  const movePortraitReveal = (event: PointerEvent<HTMLElement>) => {
+    const bounds = event.currentTarget.getBoundingClientRect()
+    event.currentTarget.style.setProperty('--portrait-x', `${((event.clientX - bounds.left) / bounds.width) * 100}%`)
+    event.currentTarget.style.setProperty('--portrait-y', `${((event.clientY - bounds.top) / bounds.height) * 100}%`)
+  }
+
   useEffect(() => {
     const updateHeader = () => {
-      const sectionTop = fourthSceneRef.current?.getBoundingClientRect().top
-      setFourthHeaderVisible(sectionTop !== undefined && sectionTop <= 1)
+      const section = fourthSceneRef.current?.getBoundingClientRect()
+      setFourthHeaderVisible(section !== undefined && section.top <= 1 && section.bottom > 0)
     }
 
     updateHeader()
@@ -209,6 +229,54 @@ function App() {
     return () => context.revert()
   }, [])
 
+  useLayoutEffect(() => {
+    if (!fourthSceneRef.current || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
+
+    const context = gsap.context(() => {
+      const reveal = (selector: string, delay = 0) => {
+        gsap.utils.toArray<HTMLElement>(selector).forEach((element) => {
+          gsap.fromTo(element,
+            { autoAlpha: 0, y: 58, filter: 'blur(7px)' },
+            {
+              autoAlpha: 1,
+              y: 0,
+              filter: 'blur(0px)',
+              duration: 1.15,
+              delay,
+              ease: 'power3.out',
+              scrollTrigger: { trigger: element, start: 'top 88%', once: true },
+            },
+          )
+        })
+      }
+
+      reveal('.about-intro__side')
+      reveal('.about-cube', 0.12)
+      reveal('.about-statement h2')
+      reveal('.about-statement__story p')
+      reveal('.about-statement__details')
+      reveal('.about-portrait-layout__note')
+      reveal('.about-portrait')
+      reveal('.about-approach__copy')
+      reveal('.about-directions__item')
+
+      const flowers = fourthSceneRef.current?.querySelector<HTMLElement>('.about-statement__flowers')
+      if (flowers) {
+        gsap.fromTo(flowers,
+          { autoAlpha: 0 },
+          {
+            autoAlpha: 1,
+            duration: 1.4,
+            ease: 'power2.out',
+            scrollTrigger: { trigger: flowers, start: 'top 90%', once: true },
+          },
+        )
+      }
+    }, fourthSceneRef)
+
+    return () => context.revert()
+  }, [])
+
   return (
     <main>
       <div className="scroll-stage" ref={stageRef}>
@@ -311,11 +379,75 @@ function App() {
         </section>
         <div className="scroll-stage__end" id="work" aria-hidden="true" />
       </div>
-      <section className={`fourth-scene${fourthHeaderVisible ? ' fourth-scene--header-visible' : ''}`} ref={fourthSceneRef} aria-label="Vierter Abschnitt">
+      <section className={`fourth-scene${fourthHeaderVisible ? ' fourth-scene--header-visible' : ''}`} ref={fourthSceneRef} id="about" aria-label="Über mich">
         <svg className="fourth-scene__edge" viewBox="0 0 1440 80" preserveAspectRatio="none" aria-hidden="true">
           <path d="M0 67 C180 64 273 62 405 55 C549 48 598 21 732 27 C875 33 935 54 1062 49 C1201 43 1309 58 1440 61 L1440 80 H0 Z" />
         </svg>
         <SiteHeader dark />
+        <div className="about-page">
+          <div className="about-intro">
+            <div className="about-intro__scene">
+              <p className="about-intro__side"><span>[I]</span><span>ILJA.</span></p>
+              <CubeMark />
+              <p className="about-intro__side"><span>[D]</span><span>DZHUMELYA.</span></p>
+            </div>
+          </div>
+          <div className="about-statement">
+            <h2>HEY, I’M <em>ILJA.</em> I DESIGN AND BUILD WEBSITES THAT <em>STAND APART.</em></h2>
+            <div className="about-statement__story">
+              <p>I FINISHED MY IT ASSISTANT TRAINING. NOW I’M WORKING TOWARD MY <em>FACHABITUR</em> IN COMPUTER SCIENCE.</p>
+              <img className="about-statement__flowers" src="/about-halftone-flowers.png" alt="" aria-hidden="true" />
+            </div>
+            <div className="about-statement__story">
+              <dl className="about-statement__details" aria-label="Standort und Kontakt">
+                <div className="about-statement__detail about-statement__detail--location">
+                  <dt>C:</dt>
+                  <dd>53°01&apos;33.2&quot;N, 8°37&apos;51.0&quot;E</dd>
+                </div>
+                <div className="about-statement__detail">
+                  <dt>P:</dt>
+                  <dd><a href="tel:+4915229772688">+49 1522 9772688</a></dd>
+                </div>
+                <div className="about-statement__detail">
+                  <dt>E:</dt>
+                  <dd><a href="mailto:iljadzhumelya24@gmail.com">iljadzhumelya24@gmail.com</a></dd>
+                </div>
+                <div className="about-statement__detail">
+                  <dt>S:</dt>
+                  <dd>iljadzhumelya</dd>
+                </div>
+              </dl>
+              <p>I BUILD WEBSITES TO <em>STAND OUT.</em> AWAY FROM THE SCREEN, IT’S DARTS, FILMS, AND FRIENDS.</p>
+            </div>
+          </div>
+          <div className="about-portrait-layout">
+            <ol className="about-portrait-layout__notes">
+              <li className="about-portrait-layout__note">
+                <span>1</span>
+                <p>I DESIGN AND BUILD WEBSITES WITH THE HELP OF AI.</p>
+              </li>
+              <li className="about-portrait-layout__note">
+                <span>2</span>
+                <p>EVERY PROJECT SHOULD HAVE SOMETHING THE OTHERS DON’T.</p>
+              </li>
+            </ol>
+            <figure className="about-portrait" onPointerEnter={movePortraitReveal} onPointerMove={movePortraitReveal}>
+              <img src="/about-portrait.png" alt="Schwarz-Weiß-Porträt von Ilja Dzhumelya" />
+              <img className="about-portrait__reveal" src="/about-portrait.png" alt="" aria-hidden="true" />
+            </figure>
+          </div>
+          <section className="about-approach" aria-label="Meine Arbeitsweise">
+            <p className="about-approach__copy">I START WITH WHAT MAKES AN IDEA <em>DIFFERENT.</em> THEN I SHAPE THE DESIGN AND CODE UNTIL IT FEELS RIGHT.</p>
+          </section>
+          <section className="about-directions" aria-label="Mehr über mich">
+            <ol className="about-directions__list">
+              <li className="about-directions__item"><button className="about-directions__button" type="button">SKILL TREE — WHAT I CAN DO</button></li>
+              <li className="about-directions__item"><button className="about-directions__button" type="button">TIMELINE — HOW I GOT HERE</button></li>
+              <li className="about-directions__item"><button className="about-directions__button" type="button">TOOLBOX — WHAT I WORK WITH</button></li>
+              <li className="about-directions__item"><button className="about-directions__button" type="button">SOCIALS — WHERE TO FIND ME</button></li>
+            </ol>
+          </section>
+        </div>
       </section>
     </main>
   )
