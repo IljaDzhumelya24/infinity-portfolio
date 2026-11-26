@@ -7,7 +7,7 @@
 </p>
 
 <p align="center">
-  <a href="#the-experience">The Experience</a> &nbsp;·&nbsp;
+  <a href="#project-overview">The Experience</a> &nbsp;·&nbsp;
   <a href="#selected-work">Selected Work</a> &nbsp;·&nbsp;
   <a href="#the-stack">The Stack</a> &nbsp;·&nbsp;
   <a href="#run-it-locally">Run It Locally</a>
@@ -15,11 +15,11 @@
 
 ---
 
-## The Experience
+## Project overview
 
 This portfolio is built as a scroll driven journey. A monochrome hero opens into a digital rift, reveals **MY WORLD**, and leads into a stack of six projects. The final section returns to black and gives the next chapter its own space.
 
-The site is still growing. Each section is designed and built piece by piece.
+The portfolio is under active development. Its focus is scroll-driven interaction, visual storytelling and presenting selected projects.
 
 ## Selected Work
 
@@ -71,7 +71,7 @@ The project also includes **anime.js**, **Motion**, and **Kokonut UI** for futur
 ## Run It Locally
 
 ```bash
-npm install
+npm ci
 npm run dev
 ```
 
@@ -81,7 +81,21 @@ Open the local URL printed by Vite. To create a production build:
 npm run build
 ```
 
----
+## Development checks
 
-<p align="center"><strong>NO BOUNDARIES. JUST CREATIVITY.</strong></p>
+```bash
+npm run lint
+npm run build
+npm run preview
+```
+
+The build script runs TypeScript compilation before Vite creates the production bundle. The preview command serves the built site locally.
+
+## Project structure
+
+- `src` — application source
+- `public` — images, fonts and static assets
+- `docs` — documentation assets
+
+Project links are provided for reference; external availability has not been verified.
 
